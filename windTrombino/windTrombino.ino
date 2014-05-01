@@ -4,8 +4,8 @@ Trombino using wind sensor.
 ---------------------
 Project website: http://www.trombino.co.uk
 Contact: podling@ipodling.co.uk
-Project Github:
-Project hackaday.io:
+Project Github: https://github.com/iPodling/trombino
+Project hackaday.io: http://hackaday.io/project/1010
 License: GNU General Public License v3
 Library dependencies:
   Mozzi: http://sensorium.github.io/Mozzi/
