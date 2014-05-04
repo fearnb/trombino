@@ -77,6 +77,8 @@ int lower = 600; //tolerance for wind sensor
 int toSum = 3;//samples for debounce
 int prevModeState = 0;
 int mode = 0;
+int MIDINote = 0;
+int lastMIDINote = 0;
 
 void setup(){
   Ethernet.begin(mac,ip); //begin ethernet connection
@@ -147,6 +149,12 @@ if(windReading > lower){ //wind sensor reading over tolerance
     outOSCMapped();
     }else if (mode == 3){
       //send midi here
+        MIDINote = calculateMIDI();
+        if(MIDINote != lastMIDINote){ //slide has moved, cancel last note before playing current
+          sendOSCMIDIOff();
+          lastMIDINote = MIDINote;
+        }
+        sendOSCMIDI();
     }
     noteOffSent = false; //mark that a note off will be required
   } else { //wind sensor below tolerance
@@ -156,6 +164,7 @@ if(windReading > lower){ //wind sensor reading over tolerance
       sendOffMapped();
       }else if(mode == 3){
         //send midi off
+        sendOSCMIDIOff();
       }
       noteOffSent = true; //mark that note off is no longer required
     }
@@ -286,5 +295,39 @@ void sendOSCRaw(){
   message.flush();
 }
 
+int calculateMIDI(){
+  int MIDI = 0;
+  if (button1State == LOW && button2State == LOW && button3State == LOW){
+     MIDI = map(slideReading, 1022, 890, 46, 40);
+  }else if (button1State == HIGH){
+     MIDI = map(slideReading, 1022, 890, 53, 47);
+  }else if (button2State == HIGH){
+    MIDI = map(slideReading, 1022, 890, 58, 44);    
+  }else if (button3State == HIGH){
+    MIDI = map(slideReading, 1022, 890, 65, 59);
+}
+  return MIDI;
+}
+
 void sendOSCMIDI(){
+  OSCMessage message;
+  message.setAddress(outIp, port);
+  message.beginMessage("/tromb/1/note");
+  message.addArgInt32(MIDINote);
+  int velo = map(windReading, 600, 800, 0, 127);
+  message.addArgInt32(velo);
+  message.addArgInt32(1);
+  client.send(&message);
+  message.flush();
+}
+
+void sendOSCMIDIOff(){
+  OSCMessage message;
+  message.setAddress(outIp, port);
+  message.beginMessage("/tromb/1/note");
+  message.addArgInt32(lastMIDINote);
+  message.addArgInt32(0);
+  message.addArgInt32(0);
+  client.send(&message);
+  message.flush();
 }
