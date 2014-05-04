@@ -65,8 +65,8 @@ void setup(){
 void loop(){
   /*Output to LEDs*/
   digitalWrite(led1, HIGH);
-  digitalWrite(led2, HIGH);
-  digitalWrite(led3, HIGH);
+  digitalWrite(led2, LOW);
+  digitalWrite(led3, LOW);
   
   /*Output audio*/
   tone(audio, 440);
@@ -83,17 +83,17 @@ void loop(){
   /*Pring variables*/
   Serial.print("Wind read = ");
   Serial.println(windRead);
-  Serial.print("Slide read = ");
-  Serial.println(slideRead);
-  Serial.print("Pot read = ");
-  Serial.println(potRead);
-  Serial.print("Mode button = ");
-  Serial.println(modeSwitchState);
-  Serial.print("Button 1 = ");
-  Serial.println(button1State);
-  Serial.print("Button 2 = ");
-  Serial.println(button2State);
-  Serial.print("Button 3 = ");
-  Serial.println(button3State);
+//  Serial.print("Slide read = ");
+//  Serial.println(slideRead);
+//  Serial.print("Pot read = ");
+//  Serial.println(potRead);
+//  Serial.print("Mode button = ");
+//  Serial.println(modeSwitchState);
+//  Serial.print("Button 1 = ");
+//  Serial.println(button1State);
+//  Serial.print("Button 2 = ");
+//  Serial.println(button2State);
+//  Serial.print("Button 3 = ");
+//  Serial.println(button3State);
   delay(500);
 }
