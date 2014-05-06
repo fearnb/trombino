@@ -314,7 +314,7 @@ void sendOSCMIDI(){
   message.setAddress(outIp, port);
   message.beginMessage("/tromb/1/note");
   message.addArgInt32(MIDINote);
-  int velo = map(windReading, 600, 800, 0, 127);
+  int velo = map(windReading, 600, 700, 0, 127);
   message.addArgInt32(velo);
   message.addArgInt32(1);
   client.send(&message);

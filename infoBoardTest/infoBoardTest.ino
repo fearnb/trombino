@@ -64,7 +64,7 @@ void setup(){
 
 void loop(){
   /*Output to LEDs*/
-  digitalWrite(led1, HIGH);
+  digitalWrite(led1, LOW);
   digitalWrite(led2, LOW);
   digitalWrite(led3, LOW);
   
@@ -95,5 +95,5 @@ void loop(){
 //  Serial.println(button2State);
 //  Serial.print("Button 3 = ");
 //  Serial.println(button3State);
-  delay(500);
+  delay(50);
 }
