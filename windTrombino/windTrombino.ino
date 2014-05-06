@@ -41,6 +41,8 @@ Log: 1st of May 2014
 #include <SPI.h>        
 #include <Ethernet.h>
 #include <ArdOSC.h>
+#include <toneAC.h>
+
 int port = 8888;
 byte ip[] ={192, 168, 1, 177};
 byte outIp[] ={192, 168, 1, 72}; //destination IP here
@@ -79,6 +81,7 @@ int prevModeState = 0;
 int mode = 0;
 int MIDINote = 0;
 int lastMIDINote = 0;
+int volume = 0;
 
 void setup(){
   Ethernet.begin(mac,ip); //begin ethernet connection
@@ -158,7 +161,7 @@ if(windReading > lower){ //wind sensor reading over tolerance
     }
     noteOffSent = false; //mark that a note off will be required
   } else { //wind sensor below tolerance
-    noTone(speaker); //make sure no note is played
+    noToneAC(); //make sure no note is played
     if (noteOffSent == false){ //if a note off is required
       if(mode == 2){ //send OSCMapped note off
       sendOffMapped();
@@ -181,12 +184,19 @@ float floatMap(float input, float inLow, float inHigh, float outLow, float outHi
 
 /*Make a noise!*/
 void outSound(){
-  if (button1State==LOW){
+    volume = map(potReading, 0, 1023,0, 10);
+  if(button1State == LOW && button2State == LOW && button3State == LOW){
     note = floatMap(slideReading, 1022, 890, 116.54, 82.41);
-    tone(speaker, (note*2));
-  }else{
-    note = floatMap(slideReading, 1022, 890, 174.61, 123.47);
-      tone(speaker, (note*2));
+    toneAC((note*2), volume);
+  } else if(button1State == HIGH){
+      note = floatMap(slideReading, 1022, 890, 174.61, 123.47);
+      toneAC((note*2), volume);
+  }else if(button2State == HIGH){
+      note = floatMap(slideReading, 1022, 890, 233.08, 185.00);
+      toneAC((note*2), volume);
+  }else if(button3State == HIGH){
+      note = floatMap(slideReading, 1022, 890, 349.23, 246.94);
+      toneAC((note*2), volume);
   }
 }
 
